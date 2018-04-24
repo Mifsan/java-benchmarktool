@@ -19,28 +19,19 @@ public class HttpRequestListenerImpl implements HttpRequestListener {
         final boolean succeed =
                 (httpStatusCode >= HttpURLConnection.HTTP_OK && httpStatusCode < HttpURLConnection.HTTP_BAD_REQUEST);
         synchronized (this) {
-            System.out.println("succeed");
             this.benchmarkStats.addRequest(succeed, transmittedByteCount, timeSpent);
         }
     }
 
     @Override
     public void onRequestTimeout() {
-        //System.out.println("timeout");
         benchmarkStats.addKilledRequest();
     }
 
     @Override
     public void onRequestError(RuntimeException ex) {
         synchronized (this) {
-            //System.out.println("req err");
             this.lastException = ex;
         }
-    }
-
-    @Override
-    public void setTotalDuration(Duration duration) {
-        System.out.println("total duration"); //Это лишнее, можно высчитать прямо в стате
-        //this.benchmarkStats.setRequestsTotalDuration(duration);
     }
 }
