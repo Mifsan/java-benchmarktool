@@ -20,7 +20,7 @@ public class BenchmarkTool {
         requestPool.runRequests(benchmarkSettings.getTargetUrl(), benchmarkSettings.getRequestCount());
     }
 
-    public void showReport(PrintStream stream){
+    public void showReport(PrintStream stream) {
         final BenchmarkReport report = new BenchmarkReport(benchmarkStats, benchmarkSettings);
         stream.print(report.getReport());
     }
