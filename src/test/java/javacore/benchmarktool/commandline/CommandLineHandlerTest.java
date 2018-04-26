@@ -2,11 +2,9 @@ package javacore.benchmarktool.commandline;
 
 import javacore.benchmarktool.benchmark.BenchmarkSettings;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.apache.commons.cli.*;
 
-import java.net.URL;
 import java.time.Duration;
 
 public class CommandLineHandlerTest extends Assert {
