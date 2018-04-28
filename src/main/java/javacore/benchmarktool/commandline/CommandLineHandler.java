@@ -40,8 +40,7 @@ public class CommandLineHandler {
     }
 
     private void validateParameters() throws RuntimeException {
-        if (benchmarkSettings.getTargetUrl() == null)
-        {
+        if (benchmarkSettings.getTargetUrl() == null) {
             throw new RuntimeException("url should be initialized");
         }
     }

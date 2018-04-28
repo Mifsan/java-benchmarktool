@@ -9,7 +9,6 @@ public class BenchmarkStats {
     private int succeedRequestsCount = 0;
     private int failedRequestsCount = 0;
     private int killedRequestsCount = 0;
-    private Duration requestsTotalDuration;
     private long transmittedBytes = 0;
     private List<Duration> timeSpent = new ArrayList<>();
 
