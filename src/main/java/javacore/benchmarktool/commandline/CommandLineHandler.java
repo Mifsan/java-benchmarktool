@@ -11,7 +11,7 @@ public class CommandLineHandler {
     private BenchmarkSettings benchmarkSettings = new BenchmarkSettings();
     private CommandLine parameters;
 
-    public CommandLineHandler(String[] args) throws Exception{
+    public CommandLineHandler(String[] args) throws RuntimeException{
         parse(args);
     }
 
@@ -19,7 +19,7 @@ public class CommandLineHandler {
         return benchmarkSettings;
     }
 
-    private void parse(String[] args) throws Exception{
+    private void parse(String[] args) throws RuntimeException {
 
         CommandLineParser commandLineParser = new DefaultParser();
         Options options = getOptions();

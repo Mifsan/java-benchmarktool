@@ -7,7 +7,7 @@ import java.net.URL;
 import java.net.SocketTimeoutException;
 import java.time.Duration;
 
-class HttpRequestHandler implements Runnable {
+public class HttpRequestHandler implements Runnable {
     private final HttpConnection httpConnection;
     private final HttpRequestListener listener;
     private final URL url;
