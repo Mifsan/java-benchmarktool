@@ -3,7 +3,6 @@ package javacore.benchmarktool.commandline;
 import javacore.benchmarktool.benchmark.BenchmarkSettings;
 import org.junit.Assert;
 import org.junit.Test;
-import org.apache.commons.cli.*;
 
 import java.time.Duration;
 

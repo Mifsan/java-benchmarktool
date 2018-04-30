@@ -1,6 +1,6 @@
 package javacore.benchmarktool.http;
 
-import javacore.benchmarktool.benchmark.BenchmarkStats;
+import javacore.benchmarktool.benchmark.BenchmarkStatsCollectorImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +11,6 @@ import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import javacore.benchmarktool.http.HttpRequestPool;
 
 class MockHttpRequestPool {
 
@@ -60,7 +58,7 @@ public class HttpRequestPoolTest extends Assert {
     public void setup() {
         try {
             this.httpConnect = new HttpConnectionImpl(Duration.ofMillis(1000));
-            this.httpListener = new HttpRequestListenerImpl(new BenchmarkStats());
+            this.httpListener = new BenchmarkStatsCollectorImpl();
         } catch (Exception ex) {
             fail("error init mock depincy classes");
         }

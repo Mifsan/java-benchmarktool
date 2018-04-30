@@ -4,15 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-
-import javacore.benchmarktool.benchmark.BenchmarkSettings;
-import javacore.benchmarktool.benchmark.BenchmarkStats;
-import javacore.benchmarktool.http.HttpRequestListener;
-import javacore.benchmarktool.http.HttpRequestHandler;
 
 
 class MockHttpRequestListener implements HttpRequestListener {

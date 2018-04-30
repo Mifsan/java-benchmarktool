@@ -3,18 +3,15 @@ package javacore.benchmarktool.benchmark;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javacore.benchmarktool.benchmark.BenchmarkReport;
-import javacore.benchmarktool.http.HttpConnectionImpl;
-
 import java.time.Duration;
 
 public class BenchmarkReportTest extends Assert {
 
     @Test
     public void emptyStatsMustReportZeroValues() {
-        BenchmarkStats benchmarkStats = new BenchmarkStats();
-        BenchmarkSettings benchmarkSettings = new BenchmarkSettings();
-        BenchmarkReport report = new BenchmarkReport(benchmarkStats, benchmarkSettings);
+        BenchmarkStatsImpl benchmarkStatsImpl = new BenchmarkStatsImpl();
+        BenchmarkSettingsImpl benchmarkSettingsImpl = new BenchmarkSettingsImpl();
+        BenchmarkReportImpl report = new BenchmarkReportImpl(benchmarkStatsImpl, benchmarkSettingsImpl);
 
         String expectedReportOutput = "Concurrency level:     5\n" +
                 "Total time spent:      0 sec\n" +
@@ -36,14 +33,14 @@ public class BenchmarkReportTest extends Assert {
 
     @Test
     public void filledStatsMustContainEqualValuesInReport() {
-        BenchmarkStats benchmarkStats = new BenchmarkStats();
-        BenchmarkSettings benchmarkSettings = new BenchmarkSettings();
+        BenchmarkStatsImpl benchmarkStatsImpl = new BenchmarkStatsImpl();
+        BenchmarkSettingsImpl benchmarkSettingsImpl = new BenchmarkSettingsImpl();
 
-        benchmarkStats.addRequest(true, 100, Duration.ofMillis(1000));
-        benchmarkStats.addRequest(true, 200, Duration.ofMillis(1000));
-        benchmarkStats.addRequest(false, 0, Duration.ofMillis(1000));
+        benchmarkStatsImpl.addRequest(true, 100, Duration.ofMillis(1000));
+        benchmarkStatsImpl.addRequest(true, 200, Duration.ofMillis(1000));
+        benchmarkStatsImpl.addRequest(false, 0, Duration.ofMillis(1000));
 
-        BenchmarkReport report = new BenchmarkReport(benchmarkStats, benchmarkSettings);
+        BenchmarkReportImpl report = new BenchmarkReportImpl(benchmarkStatsImpl, benchmarkSettingsImpl);
 
         String expectedReportOutput = "Concurrency level:     5\n" +
                 "Total time spent:      3 sec\n" +
@@ -65,12 +62,12 @@ public class BenchmarkReportTest extends Assert {
 
     @Test
     public void filledSettingsMustContainEqualValuesInReport() {
-        BenchmarkStats benchmarkStats = new BenchmarkStats();
-        BenchmarkSettings benchmarkSettings = new BenchmarkSettings();
+        BenchmarkStatsImpl benchmarkStatsImpl = new BenchmarkStatsImpl();
+        BenchmarkSettingsImpl benchmarkSettingsImpl = new BenchmarkSettingsImpl();
 
-        benchmarkSettings.setConcurrencyLevel(100);
+        benchmarkSettingsImpl.setConcurrencyLevel(100);
 
-        BenchmarkReport report = new BenchmarkReport(benchmarkStats, benchmarkSettings);
+        BenchmarkReportImpl report = new BenchmarkReportImpl(benchmarkStatsImpl, benchmarkSettingsImpl);
 
         String expectedReportOutput = "Concurrency level:     100\n" +
                 "Total time spent:      0 sec\n" +

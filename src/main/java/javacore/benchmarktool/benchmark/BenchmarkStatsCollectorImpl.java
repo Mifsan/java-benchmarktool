@@ -1,17 +1,18 @@
-package javacore.benchmarktool.http;
-
-import javacore.benchmarktool.benchmark.BenchmarkStats;
+package javacore.benchmarktool.benchmark;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
 
-public class HttpRequestListenerImpl implements HttpRequestListener {
+public class BenchmarkStatsCollectorImpl implements BenchmarkStatsCollector {
+    private BenchmarkStatsImpl benchmarkStatsImpl = new BenchmarkStatsImpl();
+    private RuntimeException lastException;
 
-    private BenchmarkStats benchmarkStats;
-    private Exception lastException;
-
-    public HttpRequestListenerImpl(BenchmarkStats benchmarkStats) {
-        this.benchmarkStats = benchmarkStats;
+    @Override
+    public BenchmarkStats getStats() throws RuntimeException {
+        if (lastException != null) {
+            throw lastException;
+        }
+        return benchmarkStatsImpl;
     }
 
     @Override
@@ -19,13 +20,13 @@ public class HttpRequestListenerImpl implements HttpRequestListener {
         final boolean succeed =
                 (httpStatusCode >= HttpURLConnection.HTTP_OK && httpStatusCode < HttpURLConnection.HTTP_BAD_REQUEST);
         synchronized (this) {
-            this.benchmarkStats.addRequest(succeed, transmittedByteCount, timeSpent);
+            this.benchmarkStatsImpl.addRequest(succeed, transmittedByteCount, timeSpent);
         }
     }
 
     @Override
     public void onRequestTimeout() {
-        benchmarkStats.addKilledRequest();
+        benchmarkStatsImpl.addKilledRequest();
     }
 
     @Override
@@ -34,4 +35,5 @@ public class HttpRequestListenerImpl implements HttpRequestListener {
             this.lastException = ex;
         }
     }
+
 }

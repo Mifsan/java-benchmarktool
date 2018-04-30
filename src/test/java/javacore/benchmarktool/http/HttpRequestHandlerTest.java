@@ -1,6 +1,7 @@
 package javacore.benchmarktool.http;
 
-import javacore.benchmarktool.benchmark.BenchmarkStats;
+import javacore.benchmarktool.benchmark.BenchmarkStatsCollectorImpl;
+import javacore.benchmarktool.benchmark.BenchmarkStatsImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +13,6 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.time.Duration;
-
-import javacore.benchmarktool.http.HttpRequestListener;
-import javacore.benchmarktool.http.HttpRequestListenerImpl;
 
 
 class MockHttpRequestHandler implements Runnable {
@@ -79,7 +77,7 @@ public class HttpRequestHandlerTest extends Assert {
     @Before
     public void setup() {
         try {
-            this.listener = new HttpRequestListenerImpl(new BenchmarkStats());
+            this.listener = new BenchmarkStatsCollectorImpl();
             this.httpConnect = new HttpConnectionImpl(Duration.ofMillis(1000));
         } catch (Exception ex) {
             fail("error init mock depincy classes");

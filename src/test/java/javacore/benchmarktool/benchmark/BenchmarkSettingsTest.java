@@ -1,6 +1,5 @@
 package javacore.benchmarktool.benchmark;
 
-import javacore.benchmarktool.http.HttpConnectionImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,29 +11,29 @@ public class BenchmarkSettingsTest extends Assert {
 
     @Test
     public void emptySettingsReturnDefaultValues() {
-        BenchmarkSettings benchmarkSettings = new BenchmarkSettings();
+        BenchmarkSettingsImpl benchmarkSettingsImpl = new BenchmarkSettingsImpl();
 
-        assertEquals(benchmarkSettings.getRequestCount(), 100);
-        assertEquals(benchmarkSettings.getConcurrencyLevel(), 5);
-        assertEquals(benchmarkSettings.getTimeout(), Duration.ofMillis(100));
+        assertEquals(benchmarkSettingsImpl.getRequestCount(), 100);
+        assertEquals(benchmarkSettingsImpl.getConcurrencyLevel(), 5);
+        assertEquals(benchmarkSettingsImpl.getTimeout(), Duration.ofMillis(100));
     }
 
     @Test
     public void filledSettingsReturnedInGetters() {
-        BenchmarkSettings benchmarkSettings = new BenchmarkSettings();
+        BenchmarkSettingsImpl benchmarkSettingsImpl = new BenchmarkSettingsImpl();
 
-        benchmarkSettings.setConcurrencyLevel(10);
+        benchmarkSettingsImpl.setConcurrencyLevel(10);
         try {
-            benchmarkSettings.setTargetUrl(new URL("http://test.ru/"));
-            assertEquals(benchmarkSettings.getTargetUrl(), new URL("http://test.ru/"));
+            benchmarkSettingsImpl.setTargetUrl(new URL("http://test.ru/"));
+            assertEquals(benchmarkSettingsImpl.getTargetUrl(), new URL("http://test.ru/"));
         } catch (MalformedURLException e) {
             fail(e.getMessage());
         }
-        benchmarkSettings.setRequestCount(20);
-        benchmarkSettings.setTimeout(Duration.ofMillis(500));
+        benchmarkSettingsImpl.setRequestCount(20);
+        benchmarkSettingsImpl.setTimeout(Duration.ofMillis(500));
 
-        assertEquals(benchmarkSettings.getRequestCount(), 20);
-        assertEquals(benchmarkSettings.getConcurrencyLevel(), 10);
-        assertEquals(benchmarkSettings.getTimeout(), Duration.ofMillis(500));
+        assertEquals(benchmarkSettingsImpl.getRequestCount(), 20);
+        assertEquals(benchmarkSettingsImpl.getConcurrencyLevel(), 10);
+        assertEquals(benchmarkSettingsImpl.getTimeout(), Duration.ofMillis(500));
     }
 }
