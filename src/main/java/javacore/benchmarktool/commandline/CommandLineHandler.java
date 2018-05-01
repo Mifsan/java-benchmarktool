@@ -45,8 +45,6 @@ public class CommandLineHandler {
     }
 
     private void setParameters(CommandLine parameters) throws RuntimeException {
-        System.out.println(parameters.getOptionValue("url"));
-
         if (parameters.getOptionValue("url") != null) {
             setUrl(parameters.getOptionValue("url"));
         }
@@ -96,8 +94,7 @@ public class CommandLineHandler {
         }
     }
 
-    private void printHelp()
-    {
+    private void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp( "Benchmark tool", getOptions() );
     }
