@@ -14,7 +14,7 @@ public class HttpRequestHandler implements Runnable {
     private long readByteCount;
     private int httpStatusCode;
 
-    HttpRequestHandler(URL url, HttpConnection httpConnection, HttpRequestListener listener) {
+    public HttpRequestHandler(URL url, HttpConnection httpConnection, HttpRequestListener listener) {
         this.url = url;
         this.httpConnection = httpConnection;
         this.listener = listener;
