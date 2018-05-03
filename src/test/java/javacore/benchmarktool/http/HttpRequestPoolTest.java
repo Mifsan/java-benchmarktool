@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-class MockHttpRequestPool {
+class MockHttpRequestPool extends HttpRequestPool {
 
     private final HttpRequestListener reqListener;
     private final HttpConnection httpConnect;
@@ -20,6 +20,7 @@ class MockHttpRequestPool {
     private int requestsCount = 0;
 
     public MockHttpRequestPool(HttpConnection httpConnect, HttpRequestListener reqListener, int concurrency) {
+        super(httpConnect, reqListener, concurrency);
         this.httpConnect = httpConnect;
         this.reqListener = reqListener;
         this.executorService = Executors.newFixedThreadPool(concurrency);
