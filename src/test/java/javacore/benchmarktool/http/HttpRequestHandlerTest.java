@@ -31,7 +31,7 @@ class MockHttpRequestHandler implements Runnable {
         this.listener = listener;
     }
 
-    private void ResetIndicators() {
+    public void ResetIndicators() {
         isRequestSuccess = false;
         isRequestTimeout = false;
         isRequestError = false;
@@ -51,9 +51,7 @@ class MockHttpRequestHandler implements Runnable {
             isRequestTimeout = true;
         } catch (IOException e) {
             isRequestError = true;
-        } catch (RuntimeException e) {
-            isRequestError = true;
-        } finally { }
+        }
     }
 
     public boolean IsRequestSuccess() { return isRequestSuccess; }
@@ -118,5 +116,19 @@ public class HttpRequestHandlerTest extends Assert {
         }
     }
 
+    @Test
+    public void notworkingHostHandlerResponseError() {
+        try {
+            this.mockHttpRequestHandler = new MockHttpRequestHandler(
+                    new URL("https://yandex.ru/images/wewewewe"),
+                    this.httpConnect,
+                    this.listener);
+
+            this.mockHttpRequestHandler.run();
+            assertTrue(this.mockHttpRequestHandler.IsRequestError());
+        } catch (MalformedURLException e) {
+            fail(e.getMessage());
+        }
+    }
 
 }

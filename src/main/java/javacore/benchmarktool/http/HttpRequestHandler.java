@@ -31,7 +31,9 @@ public class HttpRequestHandler implements Runnable {
         } catch (SocketTimeoutException e) {
             listener.onRequestTimeout();
         } catch (IOException e) {
-            listener.onRequestError(new RuntimeException("got IOException", e));
+            if (this.httpStatusCode != 200) {
+                listener.onRequestError(new RuntimeException("Successful answer was not received from target host", e));
+            }
         } catch (RuntimeException e) {
             listener.onRequestError(e);
         } finally {
