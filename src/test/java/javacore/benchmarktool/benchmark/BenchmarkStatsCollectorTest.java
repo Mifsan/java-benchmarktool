@@ -1,4 +1,4 @@
-package javacore.benchmarktool.http;
+package javacore.benchmarktool.benchmark;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,26 +8,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
+import javacore.benchmarktool.http.HttpConnection;
+import javacore.benchmarktool.http.HttpConnectionImpl;
+import javacore.benchmarktool.http.HttpRequestHandler;
+import javacore.benchmarktool.benchmark.BenchmarkStats;
+import javacore.benchmarktool.benchmark.BenchmarkStatsImpl;
+import javacore.benchmarktool.benchmark.BenchmarkStatsCollector;
 
-class MockHttpRequestListener implements HttpRequestListener {
-
-    private Duration timeSpent;
-    private long bytesCount = 0;
-    private int httpStatusCode = 0;
+class MockBenchmarkStatsCollector extends BenchmarkStatsCollectorImpl{
+    private BenchmarkStatsImpl benchmarkStatsImpl = new BenchmarkStatsImpl();
     private boolean isRequestError = false;
     private boolean isRequestTimeout = false;
-
-    final Duration GetTimeSpent() {
-        return this.timeSpent;
-    }
-
-    final long GetBytesCount() {
-        return this.bytesCount;
-    }
-
-    final int GetHttpStatusCode() {
-        return this.httpStatusCode;
-    }
 
     final boolean IsRequestError() {
         return this.isRequestError;
@@ -41,38 +32,36 @@ class MockHttpRequestListener implements HttpRequestListener {
         return !this.isRequestTimeout && !this.isRequestError;
     }
 
-    @Override
+    public BenchmarkStats getStats() {
+        return benchmarkStatsImpl;
+    }
+
     public void onRequestComplete(Duration timeSpent, long transmittedByteCount, int httpStatusCode) {
         synchronized (this) {
             isRequestError = false;
             isRequestTimeout = false;
-            this.timeSpent = timeSpent;
-            this.bytesCount = transmittedByteCount;
-            this.httpStatusCode = httpStatusCode;
         }
     }
 
-    @Override
     public void onRequestError(RuntimeException ex) {
         isRequestError = true;
     }
 
-    @Override
     public void onRequestTimeout() {
         isRequestTimeout = true;
     }
 }
 
-public class HttpRequestListenerTest extends Assert {
+public class BenchmarkStatsCollectorTest extends Assert {
 
-    private MockHttpRequestListener mockListener;
+    private MockBenchmarkStatsCollector mockCollector;
     private HttpConnection httpConnect;
     private HttpRequestHandler httpRequestHandler;
 
     @Before
     public void setup() {
         try {
-            this.mockListener = new MockHttpRequestListener();
+            this.mockCollector = new MockBenchmarkStatsCollector();
             this.httpConnect = new HttpConnectionImpl(Duration.ofMillis(1000));
         } catch (Exception ex) {
             fail("error init mock depincy classes");
@@ -85,11 +74,11 @@ public class HttpRequestListenerTest extends Assert {
             this.httpRequestHandler = new HttpRequestHandler(
                     new URL("https://vk.com"),
                     this.httpConnect,
-                    this.mockListener);
+                    this.mockCollector);
 
             this.httpRequestHandler.run();
 
-            assertTrue(this.mockListener.IsRequestSuccess());
+            assertTrue(this.mockCollector.IsRequestSuccess());
         } catch (MalformedURLException e) {
             fail(e.getMessage());
         }
@@ -101,11 +90,11 @@ public class HttpRequestListenerTest extends Assert {
             this.httpRequestHandler = new HttpRequestHandler(
                     new URL("https://vksdfcsecsecsdcsd.com"),
                     this.httpConnect,
-                    this.mockListener);
+                    this.mockCollector);
 
             this.httpRequestHandler.run();
 
-            assertTrue(this.mockListener.IsRequestError());
+            assertTrue(this.mockCollector.IsRequestError());
         } catch (MalformedURLException e) {
             fail(e.getMessage());
         }
@@ -117,14 +106,13 @@ public class HttpRequestListenerTest extends Assert {
             this.httpRequestHandler = new HttpRequestHandler(
                     new URL("https://vk.com"),
                     this.httpConnect,
-                    this.mockListener);
+                    this.mockCollector);
 
             this.httpRequestHandler.run();
 
-            assertTrue(this.mockListener.GetBytesCount() > 0);
-            assertEquals(this.mockListener.GetHttpStatusCode(), 200);
-            assertTrue(this.mockListener.GetTimeSpent() != Duration.ofMillis(0));
-
+            BenchmarkStats receivedStat = this.mockCollector.getStats();
+            assertTrue(mockCollector.IsRequestSuccess());
+            assertEquals(receivedStat.getFailedRequestsCount(), 0);
         } catch (MalformedURLException e) {
             fail(e.getMessage());
         }
